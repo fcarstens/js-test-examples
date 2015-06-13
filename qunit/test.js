@@ -12,6 +12,6 @@ QUnit.test("baz", function(assert) {
     assert.ok(true);
 });
 
-QUnit.done(function(details) {
-    console.log(details);
-});
+//QUnit.done(function(details) {
+//    console.log(details);
+//});

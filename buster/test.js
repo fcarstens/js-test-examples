@@ -11,7 +11,6 @@ buster.testCase("group a", {
 
     "bar goes wrong": function () {
         assert.same(5,"5");
-		assert.same(4,"4");
     },
 });
 

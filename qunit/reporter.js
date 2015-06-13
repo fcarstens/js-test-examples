@@ -6,7 +6,8 @@ class EventEmitter {
     on(name, fun) {
         if (this.listeners[name] == undefined) {
             this.listeners[name] = [fun];
-        } else {
+        }
+        else {
             this.listeners[name].push(fun);
         }
     }
@@ -20,32 +21,41 @@ class EventEmitter {
     }
 }
 
-class BusterAdapter extends EventEmitter {
+class QUnitAdapter extends EventEmitter {
     constructor() {
         super();
-        buster.testRunner.on("suite:end", this.onDone.bind(this));
-        buster.testRunner.on("suite:start", this.onStart.bind(this));
+        this.total = 0;
+        this.failed = 0;
+        this.passed = 0;
+        QUnit.done(this.onDone.bind(this));
+        QUnit.testDone(this.onTestDone.bind(this));
     }
 
-    onStart(){
-        this.startTime = new Date();
+    onTestDone(details) {
+        this.total++;
+        if (details.failed != 0) {
+            this.failed++;
+        }
+        else {
+            this.passed++;
+        }
+
     }
 
     onDone(details) {
-
         var standard = {
-            totalTests: details.tests,
-            failedTests: details.failures + details.errors + details.timeouts,
-            runtime: new Date() - this.startTime
+            totalTests: this.total,
+            failedTests: this.failed,
+            passedTests: this.passed,
+            runtime: details.runtime
+
         };
-        standard.passedTests = standard.totalTests - standard.failedTests;
-
         this.emit("runEnd", standard);
-
     }
 }
 
-var adapter = new BusterAdapter();
+
+var adapter = new QUnitAdapter();
 adapter.on("runEnd", function (details) {
     console.log(details)
 });
