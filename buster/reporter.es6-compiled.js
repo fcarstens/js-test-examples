@@ -102,4 +102,4 @@ adapter.on("runEnd", function (details) {
     console.log(details);
 });
 
-//# sourceMappingURL=reporter-compiled.js.map
+//# sourceMappingURL=reporter.es6-compiled.js.map
