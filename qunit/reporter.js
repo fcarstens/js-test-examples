@@ -1,4 +1,4 @@
-define(["exports", "../eventemitter", "../data"], function (exports, _eventemitter, _data) {
+define(["exports", "module", "../eventemitter", "../data"], function (exports, module, _eventemitter, _data) {
     "use strict";
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -36,6 +36,15 @@ define(["exports", "../eventemitter", "../data"], function (exports, _eventemitt
                 } else {
                     this.passed++;
                 }
+                var status;
+                if (details.failed != 0) {
+                    status = "failed";
+                } else {
+                    status = "passed";
+                }
+                var test = new _data.Test(details.name, status, details.runtime);
+
+                this.emit("testEnd", test);
             }
         }, {
             key: "onDone",
@@ -54,10 +63,7 @@ define(["exports", "../eventemitter", "../data"], function (exports, _eventemitt
         return QUnitAdapter;
     })(_EventEmitter2["default"]);
 
-    var adapter = new QUnitAdapter();
-    adapter.on("runEnd", function (details) {
-        console.log(details);
-    });
+    module.exports = QUnitAdapter;
 });
 
 //# sourceMappingURL=reporter.js.map

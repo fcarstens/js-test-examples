@@ -59,5 +59,4 @@ var groupA = new Suite("group a", [], [foo, bar]);
 var groupB = new Suite("group b", [], [baz]);
 var root = new Suite("root", [groupA, groupB], []);
 
-console.log(root.getAllTests());
-console.log(root.getTotal());
+export var demoData = root;

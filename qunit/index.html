@@ -7,8 +7,23 @@
     <script src="test.js"></script>
     <script>
         QUnit.config.autostart = false;
-        require(['reporter'], function (reporter) {
+
+        require(['reporter', '../data'], function (QUnitAdapter, data) {
+
+
+            //console.log(data);
+            var adapter = new QUnitAdapter();
+            adapter.on("runEnd", function (details) {
+                console.log(details);
+            });
+
+            adapter.on("testEnd", function (test){
+                console.log(test);
+            });
+
             QUnit.start();
+
+
         });
     </script>
     <meta charset="utf-8">

@@ -78,8 +78,8 @@ define(["exports"], function (exports) {
     var groupB = new Suite("group b", [], [baz]);
     var root = new Suite("root", [groupA, groupB], []);
 
-    console.log(root.getAllTests());
-    console.log(root.getTotal());
+    var demoData = root;
+    exports.demoData = demoData;
 });
 
 //# sourceMappingURL=data.js.map

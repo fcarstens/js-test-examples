@@ -2,7 +2,7 @@ import EventEmitter from "../eventemitter"
 import {Test, Suite} from "../data"
 
 
-class QUnitAdapter extends EventEmitter {
+export default class QUnitAdapter extends EventEmitter {
     constructor() {
         super();
         this.total = 0;
@@ -20,6 +20,16 @@ class QUnitAdapter extends EventEmitter {
         else {
             this.passed++;
         }
+        var status;
+         if (details.failed != 0){
+            status = "failed";
+        }
+        else {
+            status = "passed";
+        }
+        var test = new Test(details.name, status, details.runtime);
+
+        this.emit("testEnd", test);
 
     }
 
@@ -34,8 +44,3 @@ class QUnitAdapter extends EventEmitter {
         this.emit("runEnd", standard);
     }
 }
-
-var adapter = new QUnitAdapter();
-adapter.on("runEnd", function (details) {
-    console.log(details);
-});
