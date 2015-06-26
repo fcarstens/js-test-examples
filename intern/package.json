@@ -1,0 +1,7 @@
+{
+  "name": "js-test-examples",
+  "version": "1.0.0",
+  "devDependencies": {
+    "intern": "^2.2.2"
+  }
+}
