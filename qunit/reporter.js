@@ -22,7 +22,7 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
             QUnit.testDone(this.onTestDone.bind(this));
             QUnit.moduleDone(this.onModuleDone.bind(this));
 
-            this.tests = [];
+            this.tests = {};
             this.suites = [];
         }
 
@@ -38,7 +38,7 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
                     status = "passed";
                 }
                 var test = new _data.Test(details.name, status, details.runtime);
-                this.tests.push(test);
+                this.tests[details.testId] = test;
                 this.emit("testEnd", test);
             }
         }, {
@@ -50,8 +50,64 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
         }, {
             key: "onModuleDone",
             value: function onModuleDone(details) {
-                var suite = new _data.Suite(details.name, [], this.tests);
-                this.tests = [];
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+
+                try {
+                    for (var _iterator = details.tests[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        test = _step.value;
+
+                        // check if the module is actually finished:
+                        // QUnit may trigger moduleDone multiple times if it reorders tests
+                        // if not, return and wait for the next moduleDone
+                        if (!(test.testId in this.tests)) {
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"]) {
+                            _iterator["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+
+                var testArray = [];
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+
+                try {
+                    for (var _iterator2 = details.tests[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        test = _step2.value;
+
+                        testArray.push(this.tests[test.testId]);
+                        delete this.tests[test.testId];
+                    }
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                            _iterator2["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
+                    }
+                }
+
+                var suite = new _data.Suite(details.name, [], testArray);
                 this.suites.push(suite);
                 this.emit("suiteEnd", suite);
             }

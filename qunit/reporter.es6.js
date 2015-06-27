@@ -9,8 +9,9 @@ export default class QUnitAdapter extends EventEmitter {
         QUnit.testDone(this.onTestDone.bind(this));
         QUnit.moduleDone(this.onModuleDone.bind(this));
 
-        this.tests = [];
+        this.tests = {};
         this.suites = [];
+
     }
 
     onTestDone(details) {
@@ -22,7 +23,7 @@ export default class QUnitAdapter extends EventEmitter {
             status = "passed";
         }
         var test = new Test(details.name, status, details.runtime);
-        this.tests.push(test);
+        this.tests[details.testId] = test;
         this.emit("testEnd", test);
 
     }
@@ -33,8 +34,21 @@ export default class QUnitAdapter extends EventEmitter {
     }
 
     onModuleDone(details) {
-        var suite = new Suite(details.name, [], this.tests);
-        this.tests = [];
+        for (test of details.tests){
+            // check if the module is actually finished:
+            // QUnit may trigger moduleDone multiple times if it reorders tests
+            // if not, return and wait for the next moduleDone
+            if(!(test.testId in this.tests)){
+                return;
+            }
+        }
+        var testArray = [];
+        for (test of details.tests){
+            testArray.push(this.tests[test.testId]);
+            delete this.tests[test.testId];
+        }
+
+        var suite = new Suite(details.name, [], testArray);
         this.suites.push(suite);
         this.emit("suiteEnd", suite);
     }
