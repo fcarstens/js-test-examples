@@ -7,6 +7,12 @@ export class Test {
 }
 
 export class Suite {
+    /**
+     *
+     * @param name
+     * @param childSuites
+     * @param tests: array containing tests belonging to the suite but not to a child suite
+     */
     constructor(name, childSuites, tests) {
         this.name = name;
         this.childSuites = childSuites;

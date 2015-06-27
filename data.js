@@ -20,6 +20,13 @@ define(["exports"], function (exports) {
     exports.Test = Test;
 
     var Suite = (function () {
+        /**
+         *
+         * @param name
+         * @param childSuites
+         * @param tests: array containing tests belonging to the suite but not to a child suite
+         */
+
         function Suite(name, childSuites, tests) {
             _classCallCheck(this, Suite);
 

@@ -11,3 +11,4 @@ QUnit.module("group b");
 QUnit.test("baz", function(assert) {
     assert.ok(true);
 });
+

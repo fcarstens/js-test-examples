@@ -10,20 +10,22 @@
 
         require(['reporter', '../data'], function (QUnitAdapter, data) {
 
-
-            //console.log(data);
             var adapter = new QUnitAdapter();
-            adapter.on("runEnd", function (details) {
-                console.log(details);
+
+            adapter.on("runEnd", function(globalSuite){
+                console.log("runEnd", globalSuite, globalSuite.getTotal());
             });
 
-            adapter.on("testEnd", function (test){
-                console.log(test);
+            adapter.on("suiteEnd", function(suite){
+                console.log("suiteEnd", suite);
             });
+
+            adapter.on("testEnd", function(test){
+                console.log("testEnd", test);
+            });
+
 
             QUnit.start();
-
-
         });
     </script>
     <meta charset="utf-8">

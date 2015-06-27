@@ -18,11 +18,12 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
             _classCallCheck(this, QUnitAdapter);
 
             _get(Object.getPrototypeOf(QUnitAdapter.prototype), "constructor", this).call(this);
-            this.total = 0;
-            this.failed = 0;
-            this.passed = 0;
             QUnit.done(this.onDone.bind(this));
             QUnit.testDone(this.onTestDone.bind(this));
+            QUnit.moduleDone(this.onModuleDone.bind(this));
+
+            this.tests = [];
+            this.suites = [];
         }
 
         _inherits(QUnitAdapter, _EventEmitter);
@@ -30,12 +31,6 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
         _createClass(QUnitAdapter, [{
             key: "onTestDone",
             value: function onTestDone(details) {
-                this.total++;
-                if (details.failed != 0) {
-                    this.failed++;
-                } else {
-                    this.passed++;
-                }
                 var status;
                 if (details.failed != 0) {
                     status = "failed";
@@ -43,20 +38,22 @@ define(["exports", "module", "../eventemitter", "../data"], function (exports, m
                     status = "passed";
                 }
                 var test = new _data.Test(details.name, status, details.runtime);
-
+                this.tests.push(test);
                 this.emit("testEnd", test);
             }
         }, {
             key: "onDone",
             value: function onDone(details) {
-                var standard = {
-                    totalTests: this.total,
-                    failedTests: this.failed,
-                    passedTests: this.passed,
-                    runtime: details.runtime
-
-                };
-                this.emit("runEnd", standard);
+                var globalSuite = new _data.Suite("", this.suites, []);
+                this.emit("runEnd", globalSuite);
+            }
+        }, {
+            key: "onModuleDone",
+            value: function onModuleDone(details) {
+                var suite = new _data.Suite(details.name, [], this.tests);
+                this.tests = [];
+                this.suites.push(suite);
+                this.emit("suiteEnd", suite);
             }
         }]);
 
