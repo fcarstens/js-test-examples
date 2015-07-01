@@ -8,9 +8,11 @@
     <script>
         QUnit.config.autostart = false;
 
-        require(['reporter', '../data'], function (QUnitAdapter, data) {
+        require(['reporter', '../data', '../tap'], function (QUnitAdapter, data, TapReporter) {
 
             var adapter = new QUnitAdapter();
+
+            var tapReporter = new TapReporter(adapter);
 
             adapter.on("runEnd", function(globalSuite){
                 console.log("runEnd", globalSuite, globalSuite.getTotal());
@@ -23,7 +25,6 @@
             adapter.on("testEnd", function(test){
                 console.log("testEnd", test);
             });
-
 
             QUnit.start();
         });
