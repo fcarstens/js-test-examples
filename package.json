@@ -1,0 +1,17 @@
+{
+  "name": "js-test-examples",
+  "version": "1.0.0",
+  "scripts": {
+    "compile-qunit": "babel qunit/reporter.es6.js -o qunit/reporter.js -s -m amd",
+    "compile-jasmine": "babel jasmine/reporter.es6.js -o jasmine/reporter.js -s -m amd",
+    "compile-buster": "babel buster/reporter.es6.js -o buster/reporter.js -s -m amd",
+    "compile-data": "babel data.es6.js -o data.js -s -m amd",
+    "compile-eventemitter": "babel eventemitter.es6.js -o eventemitter.js -s -m amd",
+    "compile-tap": "babel tap.es6.js -o tap.js -s -m amd",
+
+    "compile": "npm run compile-qunit && npm run compile-jasmine && npm run compile-buster && npm run compile-data && npm run compile-eventemitter && npm run compile-tap"
+  },
+  "devDependencies": {
+    "babel": "^5.6.14"
+  }
+}

@@ -24,10 +24,6 @@ define(["exports", "module"], function (exports, module) {
         }, {
             key: "emit",
             value: function emit(name) {
-                for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                    params[_key - 1] = arguments[_key];
-                }
-
                 if (this.listeners[name]) {
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
@@ -36,6 +32,10 @@ define(["exports", "module"], function (exports, module) {
                     try {
                         for (var _iterator = this.listeners[name][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                             var fun = _step.value;
+
+                            for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                                params[_key - 1] = arguments[_key];
+                            }
 
                             fun.apply(undefined, params); //callback
                         }
