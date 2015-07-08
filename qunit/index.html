@@ -10,6 +10,7 @@
 
         require(['reporter', '../data', '../tap'], function (QUnitAdapter, data, TapReporter) {
 
+            /*
             var adapter = new QUnitAdapter();
 
             var tapReporter = new TapReporter(adapter);
@@ -24,6 +25,10 @@
 
             adapter.on("testEnd", function(test){
                 console.log("testEnd", test);
+            });
+ */
+            QUnit.testDone(function(details){
+                console.log(details);
             });
 
             QUnit.start();
